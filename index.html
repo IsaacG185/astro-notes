@@ -31,7 +31,7 @@
   </style>
 </head>
 <body>
-  <h1>Energy ↔ Wavelength Converter</h1>
+  <h1>Astro Unit Converter</h1>
 
   <label for="inputValue">Value:</label>
   <input type="number" id="inputValue" step="any">
@@ -41,6 +41,7 @@
     <option value="eV">eV</option>
     <option value="keV">keV</option>
     <option value="angstrom">Å</option>
+    <option value="nm">nm</option>
   </select>
 
   <label for="outputUnit">To:</label>
@@ -48,6 +49,7 @@
     <option value="eV">eV</option>
     <option value="keV">keV</option>
     <option value="angstrom">Å</option>
+    <option value="nm">nm</option>
   </select>
 
   <button onclick="convert()">Convert</button>
@@ -56,7 +58,7 @@
 
   <script>
     // Constants
-    const hc_keV_A = 12.39842; // keV·Å
+    const hc_keV_A = 12.39842;       // keV·Å
     const hc_eV_A = hc_keV_A * 1000; // eV·Å
 
     function convert() {
@@ -75,6 +77,8 @@
       // Step 1: Convert input to Ångström internally
       if (from === "angstrom") {
         angstromValue = value;
+      } else if (from === "nm") {
+        angstromValue = value * 10; // 1 nm = 10 Å
       } else if (from === "keV") {
         angstromValue = hc_keV_A / value;
       } else if (from === "eV") {
@@ -85,6 +89,8 @@
       let outputValue;
       if (to === "angstrom") {
         outputValue = angstromValue;
+      } else if (to === "nm") {
+        outputValue = angstromValue / 10; // 10 Å = 1 nm
       } else if (to === "keV") {
         outputValue = hc_keV_A / angstromValue;
       } else if (to === "eV") {
