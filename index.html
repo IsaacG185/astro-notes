@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Energy ↔ Wavelength Converter</title>
+  <title>Energy ↔ Wavelength & Black Hole Astronomy</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,13 +28,25 @@
     button:hover {
       background-color: #45a049;
     }
+    h1, h2, h3 {
+      margin-top: 30px;
+    }
+    label.toggle-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    label.toggle-label input {
+      width: auto;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <h1>Energy ↔ Wavelength Converter</h1>
 
-  <label for="inputValue">Value:</label>
-  <input type="number" id="inputValue" step="any">
+  <!-- Energy ↔ Wavelength Converter -->
+  <h1>Energy ↔ Wavelength Converter</h1>
+  <h3>Energy and Wavelength</h3>
 
   <label for="inputUnit">From:</label>
   <select id="inputUnit">
@@ -60,12 +72,14 @@
     </optgroup>
   </select>
 
+  <label for="inputValue">Value:</label>
+  <input type="number" id="inputValue" step="any">
+
   <button onclick="convert()">Convert</button>
 
   <h2 id="result"></h2>
 
   <script>
-    // Constants
     const hc_keV_A = 12.39842;       // keV·Å
     const hc_eV_A = hc_keV_A * 1000; // eV·Å
 
@@ -82,23 +96,21 @@
 
       let angstromValue;
 
-      // Step 1: Convert input to Ångström internally
       if (from === "angstrom") {
         angstromValue = value;
       } else if (from === "nm") {
-        angstromValue = value * 10; // 1 nm = 10 Å
+        angstromValue = value * 10;
       } else if (from === "keV") {
         angstromValue = hc_keV_A / value;
       } else if (from === "eV") {
         angstromValue = hc_eV_A / value;
       }
 
-      // Step 2: Convert Ångström to target unit
       let outputValue;
       if (to === "angstrom") {
         outputValue = angstromValue;
       } else if (to === "nm") {
-        outputValue = angstromValue / 10; // 10 Å = 1 nm
+        outputValue = angstromValue / 10;
       } else if (to === "keV") {
         outputValue = hc_keV_A / angstromValue;
       } else if (to === "eV") {
@@ -108,5 +120,63 @@
       resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
     }
   </script>
+
+  <!-- Gaussian Line → Velocity Converter -->
+  <h1>Gaussian Line → Velocity Converter</h1>
+  <h3>Black Hole Astronomy</h3>
+
+  <label for="lineEnergy">Line Observed Energy (E_obs in keV):</label>
+  <input type="number" id="lineEnergy" step="any">
+
+  <label for="lineSigma">Line Width (σ in keV):</label>
+  <input type="number" id="lineSigma" step="any">
+
+  <label for="redshift">Redshift (z):</label>
+  <input type="number" id="redshift" step="any" value="0">
+
+  <label class="toggle-label">
+    <input type="checkbox" id="redshiftToggle">
+    Redshift already accounted for in model
+  </label>
+
+  <label class="toggle-label">
+    <input type="checkbox" id="relativisticToggle">
+    Use Relativistic Calculation
+  </label>
+
+  <button onclick="calculateVelocity()">Calculate v/c</button>
+
+  <h2 id="velocityResult"></h2>
+
+  <script>
+    function calculateVelocity() {
+      let E_obs = parseFloat(document.getElementById('lineEnergy').value);
+      let sigma_obs = parseFloat(document.getElementById('lineSigma').value);
+      let z = parseFloat(document.getElementById('redshift').value);
+      let useRel = document.getElementById('relativisticToggle').checked;
+      let redshiftAccounted = document.getElementById('redshiftToggle').checked;
+      let resultText = document.getElementById('velocityResult');
+
+      if (isNaN(E_obs) || E_obs <= 0 || isNaN(sigma_obs) || sigma_obs <= 0) {
+        resultText.textContent = "Please enter valid positive numbers for energy and width.";
+        return;
+      }
+
+      // Correct for redshift if not accounted for
+      let E0 = redshiftAccounted ? E_obs : E_obs * (1 + z);
+      let sigma = redshiftAccounted ? sigma_obs : sigma_obs * (1 + z);
+
+      // Compute v/c
+      let vOverC;
+      if (useRel) {
+        vOverC = ((1 + sigma / E0) ** 2 - 1) / ((1 + sigma / E0) ** 2 + 1);
+      } else {
+        vOverC = sigma / E0;
+      }
+
+      resultText.textContent = `Approximate velocity: ${(vOverC*100).toFixed(2)} % of c`;
+    }
+  </script>
+
 </body>
 </html>
