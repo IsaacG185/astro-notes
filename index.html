@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>keV ↔ Ångström Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+    input {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>keV ↔ Ångström Converter</h1>
+
+  <label>Energy (keV):</label>
+  <input type="number" id="kev" step="any">
+
+  <label>Wavelength (Å):</label>
+  <input type="number" id="angstrom" step="any">
+
+  <button onclick="kevToAngstrom()">Convert keV → Å</button>
+  <button onclick="angstromToKev()">Convert Å → keV</button>
+
+  <script>
+    // hc in keV·Å (Planck's constant * speed of light)
+    const hc_keV_A = 12.39842;
+
+    function kevToAngstrom() {
+      let kev = parseFloat(document.getElementById('kev').value);
+      if (!isNaN(kev) && kev > 0) {
+        document.getElementById('angstrom').value = (hc_keV_A / kev).toFixed(6);
+      } else {
+        alert("Enter a valid positive keV value");
+      }
+    }
+
+    function angstromToKev() {
+      let angstrom = parseFloat(document.getElementById('angstrom').value);
+      if (!isNaN(angstrom) && angstrom > 0) {
+        document.getElementById('kev').value = (hc_keV_A / angstrom).toFixed(6);
+      } else {
+        alert("Enter a valid positive Å value");
+      }
+    }
+  </script>
+</body>
+</html>
