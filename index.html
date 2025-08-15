@@ -56,9 +56,6 @@
 
   <!-- Main Converter Section -->
   <h1>Astro Unit Converter</h1>
-
-  <h2>Energy and Wavelength</h2>
-
   <label for="inputUnit">From:</label>
   <select id="inputUnit">
     <optgroup label="Energy">
@@ -90,7 +87,7 @@
 
   <h2 id="result"></h2>
 
-  <button onclick="toggleXray()">X-ray / Black Hole Astronomy Converter</button>
+  <button onclick="toggleXray()">X-ray / Black Hole Astronomy Converter (for good looking science nerd Isaac)</button>
 
   <!-- Hidden X-ray Section -->
   <div id="xraySection" class="hidden-section">
@@ -107,12 +104,12 @@
 
     <label class="toggle-label">
       <input type="checkbox" id="redshiftToggle">
-      Redshift already accounted for in model
+      Redshift accounted for in your model?
     </label>
 
     <label class="toggle-label">
       <input type="checkbox" id="relativisticToggle">
-      Use Relativistic Calculation
+     Relativistic emission?
     </label>
 
     <button onclick="calculateVelocity()">Calculate v/c</button>
