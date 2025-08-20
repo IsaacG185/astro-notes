@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Astro Unit Converter</title>
+  <title>AstroNotes</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
       padding: 20px;
       line-height: 1.6;
@@ -33,6 +33,9 @@
     }
     h1, h2 {
       margin-top: 30px;
+    }
+    pre {
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -72,9 +75,86 @@
 
   <h2 id="result"></h2>
 
+
+  <!-- Emission Line Finder Section -->
+  <h1>Emission Line Finder</h1>
+
+  <label for="lineUnit">Input type:</label>
+  <select id="lineUnit">
+    <option value="energy">Energy (keV)</option>
+    <option value="wavelength">Wavelength (Å)</option>
+  </select>
+
+  <label for="lineValue">Value:</label>
+  <input type="number" id="lineValue" step="any">
+
+  <label for="redshift">Redshift (z):</label>
+  <input type="number" id="redshift" step="any" value="0">
+
+  <button onclick="findLines()">Find Emission Lines</button>
+
+  <h2>Results:</h2>
+  <pre id="lineResult"></pre>
+
   <script>
-    const hc_keV_A = 12.39842;       // keV·Å
-    const hc_eV_A = hc_keV_A * 1000; // eV·Å
+    const hc_keV_A = 12.39842; // keV·Å
+
+    // Expanded database of important astrophysical lines (rest frame)
+    const emissionLines = [
+      // Hydrogen
+      { name: "Hydrogen Lyα", wavelength: 1216, energy: hc_keV_A/1216 },
+      { name: "Hydrogen Hα", wavelength: 6563, energy: hc_keV_A/6563 },
+      { name: "Hydrogen Hβ", wavelength: 4861, energy: hc_keV_A/4861 },
+      { name: "Hydrogen Hγ", wavelength: 4340, energy: hc_keV_A/4340 },
+
+      // Helium
+      { name: "He II", wavelength: 1640, energy: hc_keV_A/1640 },
+      { name: "He II", wavelength: 4686, energy: hc_keV_A/4686 },
+
+      // Oxygen
+      { name: "O VI", wavelength: 1032, energy: hc_keV_A/1032 },
+      { name: "O VII (res)", wavelength: 21.60, energy: hc_keV_A/21.60 },
+      { name: "O VII (int)", wavelength: 21.80, energy: hc_keV_A/21.80 },
+      { name: "O VII (forb)", wavelength: 22.10, energy: hc_keV_A/22.10 },
+      { name: "O VIII Lyα", wavelength: 18.97, energy: hc_keV_A/18.97 },
+
+      // Carbon
+      { name: "C IV", wavelength: 1548, energy: hc_keV_A/1548 },
+      { name: "C IV", wavelength: 1550, energy: hc_keV_A/1550 },
+      { name: "C VI Lyα", wavelength: 33.7, energy: hc_keV_A/33.7 },
+
+      // Nitrogen
+      { name: "N V", wavelength: 1240, energy: hc_keV_A/1240 },
+      { name: "N VII Lyα", wavelength: 24.78, energy: hc_keV_A/24.78 },
+
+      // Neon
+      { name: "Ne IX (res)", wavelength: 13.45, energy: hc_keV_A/13.45 },
+      { name: "Ne X Lyα", wavelength: 12.13, energy: hc_keV_A/12.13 },
+
+      // Magnesium
+      { name: "Mg XI", wavelength: 9.17, energy: hc_keV_A/9.17 },
+      { name: "Mg XII Lyα", wavelength: 8.42, energy: hc_keV_A/8.42 },
+
+      // Silicon
+      { name: "Si XIII", wavelength: 6.65, energy: hc_keV_A/6.65 },
+      { name: "Si XIV Lyα", wavelength: 6.18, energy: hc_keV_A/6.18 },
+
+      // Sulfur
+      { name: "S XV", wavelength: 5.04, energy: hc_keV_A/5.04 },
+      { name: "S XVI Lyα", wavelength: 4.73, energy: hc_keV_A/4.73 },
+
+      // Calcium
+      { name: "Ca XIX", wavelength: 3.90, energy: hc_keV_A/3.90 },
+      { name: "Ca XX Lyα", wavelength: 3.02, energy: hc_keV_A/3.02 },
+
+      // Iron
+      { name: "Fe XVII", wavelength: 15.01, energy: hc_keV_A/15.01 },
+      { name: "Fe XVII", wavelength: 17.05, energy: hc_keV_A/17.05 },
+      { name: "Fe XVII", wavelength: 17.10, energy: hc_keV_A/17.10 },
+      { name: "Fe XXV (He-like)", wavelength: 1.85, energy: hc_keV_A/1.85 }, 
+      { name: "Fe XXVI Lyα", wavelength: 1.78, energy: hc_keV_A/1.78 }, 
+      { name: "Fe Kα (neutral)", wavelength: 1.94, energy: hc_keV_A/1.94 }
+    ];
 
     function convert() {
       let value = parseFloat(document.getElementById('inputValue').value);
@@ -88,29 +168,63 @@
       }
 
       let angstromValue;
-
-      if (from === "angstrom") {
-        angstromValue = value;
-      } else if (from === "nm") {
-        angstromValue = value * 10;
-      } else if (from === "keV") {
-        angstromValue = hc_keV_A / value;
-      } else if (from === "eV") {
-        angstromValue = hc_eV_A / value;
-      }
+      if (from === "angstrom") angstromValue = value;
+      else if (from === "nm") angstromValue = value * 10;
+      else if (from === "keV") angstromValue = hc_keV_A / value;
+      else if (from === "eV") angstromValue = (hc_keV_A*1000) / value;
 
       let outputValue;
-      if (to === "angstrom") {
-        outputValue = angstromValue;
-      } else if (to === "nm") {
-        outputValue = angstromValue / 10;
-      } else if (to === "keV") {
-        outputValue = hc_keV_A / angstromValue;
-      } else if (to === "eV") {
-        outputValue = hc_eV_A / angstromValue;
-      }
+      if (to === "angstrom") outputValue = angstromValue;
+      else if (to === "nm") outputValue = angstromValue / 10;
+      else if (to === "keV") outputValue = hc_keV_A / angstromValue;
+      else if (to === "eV") outputValue = (hc_keV_A*1000) / angstromValue;
 
       resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
+    }
+
+    function findLines() {
+      let value = parseFloat(document.getElementById('lineValue').value);
+      let unit = document.getElementById('lineUnit').value;
+      let z = parseFloat(document.getElementById('redshift').value) || 0;
+      let resultText = document.getElementById('lineResult');
+
+      if (isNaN(value) || value <= 0) {
+        resultText.textContent = "Please enter a valid positive number.";
+        return;
+      }
+
+      let inputEnergy, inputWavelength;
+      if (unit === "energy") {
+        inputEnergy = value;
+        inputWavelength = hc_keV_A / value;
+      } else {
+        inputWavelength = value;
+        inputEnergy = hc_keV_A / value;
+      }
+
+      let tolerance = 0.05; // ±5%
+
+      let matches = emissionLines.filter(line => {
+        let obsWavelength = line.wavelength * (1+z);
+        let obsEnergy = line.energy / (1+z);
+
+        return (
+          Math.abs((obsEnergy - inputEnergy) / inputEnergy) < tolerance ||
+          Math.abs((obsWavelength - inputWavelength) / inputWavelength) < tolerance
+        );
+      });
+
+      if (matches.length === 0) {
+        resultText.textContent = "No strong emission lines found near that value.";
+      } else {
+        let list = matches.map(line => {
+          let obsWavelength = line.wavelength * (1+z);
+          let obsEnergy = line.energy / (1+z);
+          return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å  
+Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
+        }).join("\n\n");
+        resultText.textContent = list;
+      }
     }
   </script>
 
