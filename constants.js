@@ -11,7 +11,7 @@ window.constants = {
     }
   },
   c: {
-    name: "Speed of light",
+    name: "Speed of Light",
     values: {
       "m/s": 2.99792458e8,
       "cm/s": 2.99792458e10,
@@ -20,7 +20,7 @@ window.constants = {
     }
   },
   eV: {
-    name: "electronvolt",
+    name: "Electronvolt",
     values: {
       "J": 1.602176634e-19,
       "erg": 1.602176634e-12,
