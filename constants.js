@@ -1,23 +1,31 @@
-// Contains all constants used in AstroNotes
-
+// Constants reference table
 window.constants = {
   h: {
-    value: 6.62607015e-34,
-    unit: "J·s",
-    name: "Planck's constant"
+    name: "Planck's constant",
+    // Values in different units
+    values: {
+      "J·s": 6.62607015e-34,
+      "erg·s": 6.62607015e-27,
+      "eV·s": 4.135667696e-15,
+      "keV·s": 4.135667696e-18
+    }
   },
   c: {
-    value: 2.99792458e8,
-    unit: "m/s",
-    name: "Speed of light"
+    name: "Speed of light",
+    values: {
+      "m/s": 2.99792458e8,
+      "cm/s": 2.99792458e10,
+      "km/s": 2.99792458e5,
+      "Å/s": 2.99792458e18
+    }
   },
   eV: {
-    value: 1.602176634e-19,
-    unit: "J",
-    name: "electronvolt"
+    name: "electronvolt",
+    values: {
+      "J": 1.602176634e-19,
+      "erg": 1.602176634e-12,
+      "keV": 0.001
+    }
   },
+  // You can add more constants here if needed
 };
-
-// Precompute hc in keV·Å
-// hc (keV·Å) = h*c / eV * (1e-10 to convert m→Å) / 1000 to convert eV → keV
-window.constants.hc = (window.constants.h.value * window.constants.c.value / window.constants.eV.value) * 1e-10 / 1000;
