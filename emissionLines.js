@@ -1,5 +1,32 @@
-// Ensure constants are loaded
-const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
+// Wrap the initialization in a function
+(function() {
+  // Wait until window.constants is available
+  if (!window.constants) {
+    console.error("Constants not loaded yet. emissionLines.js requires constants.js to load first.");
+    return;
+  }
+
+  // Calculated for brevity.
+  const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
+
+  // Define emission lines
+  window.emissionLines = [
+    { name: "Hydrogen Lyα", wavelength: 1216, energy: hc_keV_A / 1216 },
+    { name: "Hydrogen Lyβ", wavelength: 1026, energy: hc_keV_A / 1026 },
+    { name: "Hydrogen Lyγ", wavelength: 973, energy: hc_keV_A / 973 },
+    { name: "Hydrogen Hα", wavelength: 6563, energy: hc_keV_A / 6563 },
+    { name: "Hydrogen Hβ", wavelength: 4861, energy: hc_keV_A / 4861 },
+    { name: "Hydrogen Hγ", wavelength: 4340, energy: hc_keV_A / 4340 },
+    { name: "Hydrogen Hδ", wavelength: 4102, energy: hc_keV_A / 4102 },
+
+    { name: "He I 5876", wavelength: 5876, energy: hc_keV_A / 5876 },
+    { name: "He II 4686", wavelength: 4686, energy: hc_keV_A / 4686 },
+    { name: "[O III] 5007", wavelength: 5007, energy: hc_keV_A / 5007 },
+    { name: "C IV 1549", wavelength: 1549, energy: hc_keV_A / 1549 },
+    // ...rest of your lines...
+  ];
+
+})();
 
 // Emission Lines for AstroNotes
 window.emissionLines = [
