@@ -67,8 +67,33 @@ window.emissionLines = [
   { name: "Ca XX Lyα", wavelength: 3.02, energy: 12.39842/3.02 },
 
   // ================= Iron =================
-  { name: "[Fe II] 26μm", wavelength: 260000, energy: 12.39842/260000 },
-  { name: "Fe XVII", wavelength: 15.01, energy: 12.39842/15.01 },
-  { name: "Fe XXV (He-like)", wavelength: 1.85, energy: 12.39842/1.85 },
-  { name: "Fe XXVI Lyα", wavelength: 1.78, energy: 12.39842/1.78 },
+{ name: "Fe XVII", wavelength: 15.01, energy: 12.39842/15.01 },   // strong soft X-ray line
+{ name: "Fe XVII", wavelength: 17.05, energy: 12.39842/17.05 },
+{ name: "Fe XVII", wavelength: 17.10, energy: 12.39842/17.10 },
+
+{ name: "Fe XVIII", wavelength: 14.20, energy: 12.39842/14.20 },
+{ name: "Fe XVIII", wavelength: 93.92, energy: 12.39842/93.92 },
+
+{ name: "Fe XIX", wavelength: 13.52, energy: 12.39842/13.52 },
+
+{ name: "Fe XX", wavelength: 12.82, energy: 12.39842/12.82 },
+
+{ name: "Fe XXI", wavelength: 12.28, energy: 12.39842/12.28 },
+
+{ name: "Fe XXII", wavelength: 11.77, energy: 12.39842/11.77 },
+
+{ name: "Fe XXIII", wavelength: 11.00, energy: 12.39842/11.00 },
+
+{ name: "Fe XXIV", wavelength: 10.62, energy: 12.39842/10.62 },
+
+{ name: "Fe XXV (He-like)", wavelength: 1.85, energy: 12.39842/1.85 },   // ~6.70 keV
+{ name: "Fe XXVI Lyα", wavelength: 1.78, energy: 12.39842/1.78 },       // ~6.97 keV
+
+// Optical forbidden lines
+{ name: "[Fe II]", wavelength: 7155, energy: 12.39842/7155 },  // 0.00173 keV
+{ name: "[Fe III]", wavelength: 4658, energy: 12.39842/4658 }, // 0.00266 keV
+{ name: "[Fe VII]", wavelength: 6087, energy: 12.39842/6087 }, // 0.00204 keV
+{ name: "[Fe X]", wavelength: 6374, energy: 12.39842/6374 },   // 0.00194 keV
+{ name: "[Fe XIV]", wavelength: 5303, energy: 12.39842/5303 }  // 0.00234 keV
+
 ];
