@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <meta charset="UTF-8">
   <title>AstroNotes</title>
   <style>
@@ -42,6 +43,9 @@
   </style>
 </head>
 <body>
+
+    <!-- Load emission line database -->
+  <script src="emissionLines.js"></script>
 
   <!-- Main Converter Section -->
   <h1>Astro Unit Converter</h1>
@@ -96,9 +100,6 @@
   <button onclick="findLines()">Find Emission Lines</button>
   
   <pre id="lineResult"></pre>
-
-  <!-- Load emission line database -->
-  <script src="emissionLines.js"></script>
 
   <!-- Main logic -->
   <script>
