@@ -96,65 +96,12 @@
   <h2>Results:</h2>
   <pre id="lineResult"></pre>
 
+  <!-- Load emission line database -->
+  <script src="emissionLines.html"></script>
+
+  <!-- Main logic -->
   <script>
     const hc_keV_A = 12.39842; // keV·Å
-
-    // Expanded database of important astrophysical lines (rest frame)
-    const emissionLines = [
-      // Hydrogen
-      { name: "Hydrogen Lyα", wavelength: 1216, energy: hc_keV_A/1216 },
-      { name: "Hydrogen Hα", wavelength: 6563, energy: hc_keV_A/6563 },
-      { name: "Hydrogen Hβ", wavelength: 4861, energy: hc_keV_A/4861 },
-      { name: "Hydrogen Hγ", wavelength: 4340, energy: hc_keV_A/4340 },
-
-      // Helium
-      { name: "He II", wavelength: 1640, energy: hc_keV_A/1640 },
-      { name: "He II", wavelength: 4686, energy: hc_keV_A/4686 },
-
-      // Oxygen
-      { name: "O VI", wavelength: 1032, energy: hc_keV_A/1032 },
-      { name: "O VII (res)", wavelength: 21.60, energy: hc_keV_A/21.60 },
-      { name: "O VII (int)", wavelength: 21.80, energy: hc_keV_A/21.80 },
-      { name: "O VII (forb)", wavelength: 22.10, energy: hc_keV_A/22.10 },
-      { name: "O VIII Lyα", wavelength: 18.97, energy: hc_keV_A/18.97 },
-
-      // Carbon
-      { name: "C IV", wavelength: 1548, energy: hc_keV_A/1548 },
-      { name: "C IV", wavelength: 1550, energy: hc_keV_A/1550 },
-      { name: "C VI Lyα", wavelength: 33.7, energy: hc_keV_A/33.7 },
-
-      // Nitrogen
-      { name: "N V", wavelength: 1240, energy: hc_keV_A/1240 },
-      { name: "N VII Lyα", wavelength: 24.78, energy: hc_keV_A/24.78 },
-
-      // Neon
-      { name: "Ne IX (res)", wavelength: 13.45, energy: hc_keV_A/13.45 },
-      { name: "Ne X Lyα", wavelength: 12.13, energy: hc_keV_A/12.13 },
-
-      // Magnesium
-      { name: "Mg XI", wavelength: 9.17, energy: hc_keV_A/9.17 },
-      { name: "Mg XII Lyα", wavelength: 8.42, energy: hc_keV_A/8.42 },
-
-      // Silicon
-      { name: "Si XIII", wavelength: 6.65, energy: hc_keV_A/6.65 },
-      { name: "Si XIV Lyα", wavelength: 6.18, energy: hc_keV_A/6.18 },
-
-      // Sulfur
-      { name: "S XV", wavelength: 5.04, energy: hc_keV_A/5.04 },
-      { name: "S XVI Lyα", wavelength: 4.73, energy: hc_keV_A/4.73 },
-
-      // Calcium
-      { name: "Ca XIX", wavelength: 3.90, energy: hc_keV_A/3.90 },
-      { name: "Ca XX Lyα", wavelength: 3.02, energy: hc_keV_A/3.02 },
-
-      // Iron
-      { name: "Fe XVII", wavelength: 15.01, energy: hc_keV_A/15.01 },
-      { name: "Fe XVII", wavelength: 17.05, energy: hc_keV_A/17.05 },
-      { name: "Fe XVII", wavelength: 17.10, energy: hc_keV_A/17.10 },
-      { name: "Fe XXV (He-like)", wavelength: 1.85, energy: hc_keV_A/1.85 }, 
-      { name: "Fe XXVI Lyα", wavelength: 1.78, energy: hc_keV_A/1.78 }, 
-      { name: "Fe Kα (neutral)", wavelength: 1.94, energy: hc_keV_A/1.94 }
-    ];
 
     function convert() {
       let value = parseFloat(document.getElementById('inputValue').value);
@@ -204,7 +151,7 @@
 
       let tolerance = 0.05; // ±5%
 
-      let matches = emissionLines.filter(line => {
+      let matches = window.emissionLines.filter(line => {
         let obsWavelength = line.wavelength * (1+z);
         let obsEnergy = line.energy / (1+z);
 
