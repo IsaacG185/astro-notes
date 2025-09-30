@@ -1,9 +1,6 @@
-<!--Contains the code for the webpage displayed at: https://isaacg185.github.io/astro-notes/ -->
-
 <!DOCTYPE html>
 <html>
 <head>
-  
   <meta charset="UTF-8">
   <title>AstroNotes</title>
   <style>
@@ -44,16 +41,12 @@
 </head>
 <body>
 
-<!-- START OF FILE LOADING; LOAD ORDER MATTERS! -->
-  <!-- Load constants database -->
+  <!-- ================= FILE LOADING ================= -->
   <script src="constants.js"></script>
-  
-  <!-- Load emission line database -->
   <script src="emissionLines.js"></script>
+  <!-- ================================================ -->
 
-<!-- END OF FILE LOADING -->
-  
-  <!-- Main Converter Section -->
+  <!-- ================= CONVERTER ================= -->
   <h1>Astro Unit Converter</h1>
 
   <label for="inputUnit">From:</label>
@@ -84,11 +77,9 @@
   <input type="number" id="inputValue" step="any">
 
   <button onclick="convert()">Convert</button>
-
   <h2 id="result"></h2>
 
-
-  <!-- Emission Line Finder Section -->
+  <!-- ================= EMISSION LINE FINDER ================= -->
   <h1>Emission Line Finder</h1>
 
   <label for="lineUnit">Input type:</label>
@@ -104,12 +95,12 @@
   <input type="number" id="redshift" step="any" value="0">
 
   <button onclick="findLines()">Find Emission Lines</button>
-  
   <pre id="lineResult"></pre>
 
-  <!-- Main logic -->
+  <!-- ================= MAIN LOGIC ================= -->
   <script>
-    const hc_keV_A = 12.39842; // keV·Å
+    // Shortcut: hc in keV·Å
+    const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
 
     function convert() {
       let value = parseFloat(document.getElementById('inputValue').value);
@@ -123,16 +114,17 @@
       }
 
       let angstromValue;
+
       if (from === "angstrom") angstromValue = value;
       else if (from === "nm") angstromValue = value * 10;
       else if (from === "keV") angstromValue = hc_keV_A / value;
-      else if (from === "eV") angstromValue = (hc_keV_A*1000) / value;
+      else if (from === "eV") angstromValue = (hc_keV_A * 1000) / value;
 
       let outputValue;
       if (to === "angstrom") outputValue = angstromValue;
       else if (to === "nm") outputValue = angstromValue / 10;
       else if (to === "keV") outputValue = hc_keV_A / angstromValue;
-      else if (to === "eV") outputValue = (hc_keV_A*1000) / angstromValue;
+      else if (to === "eV") outputValue = (hc_keV_A * 1000) / angstromValue;
 
       resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
     }
@@ -149,6 +141,7 @@
       }
 
       let inputEnergy, inputWavelength;
+
       if (unit === "energy") {
         inputEnergy = value;
         inputWavelength = hc_keV_A / value;
@@ -160,8 +153,8 @@
       let tolerance = 0.05; // ±5%
 
       let matches = window.emissionLines.filter(line => {
-        let obsWavelength = line.wavelength * (1+z);
-        let obsEnergy = line.energy / (1+z);
+        let obsWavelength = line.wavelength * (1 + z);
+        let obsEnergy = line.energy / (1 + z);
 
         return (
           Math.abs((obsEnergy - inputEnergy) / inputEnergy) < tolerance ||
@@ -173,8 +166,8 @@
         resultText.textContent = "No strong emission lines found near that value.";
       } else {
         let list = matches.map(line => {
-          let obsWavelength = line.wavelength * (1+z);
-          let obsEnergy = line.energy / (1+z);
+          let obsWavelength = line.wavelength * (1 + z);
+          let obsEnergy = line.energy / (1 + z);
           return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å  
 Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
         }).join("\n\n");
