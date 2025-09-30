@@ -1,180 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>AstroNotes</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: auto;
-      padding: 20px;
-      line-height: 1.6;
-      background-color: #6a0dad; /* Purple background */
-      color: white;
-    }
-    input, select, button {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
-      box-sizing: border-box;
-      border-radius: 4px;
-      border: none;
-    }
-    button {
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    h1, h2 {
-      margin-top: 30px;
-    }
-    pre {
-      white-space: pre-wrap;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>AstroNotes</title>
+<style>
+body { font-family: Arial; max-width: 700px; margin:auto; padding:20px; line-height:1.6; background:#6a0dad; color:white; }
+input, select, button { padding:8px; margin:5px 0; width:100%; border-radius:4px; border:none; box-sizing:border-box; }
+button { font-size:16px; font-weight:bold; background:#4CAF50; color:white; cursor:pointer; }
+button:hover { background:#45a049; }
+h1,h2 { margin-top:30px; }
+pre { white-space: pre-wrap; }
+</style>
 </head>
 <body>
 
-  <!-- ================= FILE LOADING ================= -->
-  <script src="constants.js"></script>
-  <script src="emissionLines.js"></script>
-  <!-- ================================================ -->
+<script src="constants.js"></script>
+<script src="emissionLines.js"></script>
 
-  <!-- ================= CONVERTER ================= -->
-  <h1>Astro Unit Converter</h1>
+<h1>Astro Unit Converter</h1>
+<label for="inputUnit">From:</label>
+<select id="inputUnit">
+  <optgroup label="Energy"><option value="eV">eV</option><option value="keV">keV</option></optgroup>
+  <optgroup label="Wavelength"><option value="angstrom">Å</option><option value="nm">nm</option></optgroup>
+</select>
+<label for="outputUnit">To:</label>
+<select id="outputUnit">
+  <optgroup label="Energy"><option value="eV">eV</option><option value="keV">keV</option></optgroup>
+  <optgroup label="Wavelength"><option value="angstrom">Å</option><option value="nm">nm</option></optgroup>
+</select>
+<label for="inputValue">Value:</label><input type="number" id="inputValue" step="any">
+<button onclick="convert()">Convert</button>
+<h2 id="result"></h2>
 
-  <label for="inputUnit">From:</label>
-  <select id="inputUnit">
-    <optgroup label="Energy">
-      <option value="eV">eV</option>
-      <option value="keV">keV</option>
-    </optgroup>
-    <optgroup label="Wavelength">
-      <option value="angstrom">Å</option>
-      <option value="nm">nm</option>
-    </optgroup>
-  </select>
+<h1>Emission Line Finder</h1>
+<label for="lineUnit">Input type:</label>
+<select id="lineUnit"><option value="energy">Energy (keV)</option><option value="wavelength">Wavelength (Å)</option></select>
+<label for="lineValue">Value:</label><input type="number" id="lineValue" step="any">
+<label for="redshift">Redshift (z):</label><input type="number" id="redshift" step="any" value="0">
+<button onclick="findLines()">Find Emission Lines</button>
+<pre id="lineResult"></pre>
 
-  <label for="outputUnit">To:</label>
-  <select id="outputUnit">
-    <optgroup label="Energy">
-      <option value="eV">eV</option>
-      <option value="keV">keV</option>
-    </optgroup>
-    <optgroup label="Wavelength">
-      <option value="angstrom">Å</option>
-      <option value="nm">nm</option>
-    </optgroup>
-  </select>
+<script>
+const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
 
-  <label for="inputValue">Value:</label>
-  <input type="number" id="inputValue" step="any">
+function convert() {
+  let value = parseFloat(document.getElementById('inputValue').value);
+  let from = document.getElementById('inputUnit').value;
+  let to = document.getElementById('outputUnit').value;
+  let resultText = document.getElementById('result');
+  if(isNaN(value)||value<=0){resultText.textContent="Please enter a valid positive number.";return;}
+  let angstromValue = from==="angstrom"?value:from==="nm"?value*10:from==="keV"?hc_keV_A/value:(hc_keV_A*1000)/value;
+  let outputValue = to==="angstrom"?angstromValue:to==="nm"?angstromValue/10:to==="keV"?hc_keV_A/angstromValue:(hc_keV_A*1000)/angstromValue;
+  resultText.textContent=`${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
+}
 
-  <button onclick="convert()">Convert</button>
-  <h2 id="result"></h2>
-
-  <!-- ================= EMISSION LINE FINDER ================= -->
-  <h1>Emission Line Finder</h1>
-
-  <label for="lineUnit">Input type:</label>
-  <select id="lineUnit">
-    <option value="energy">Energy (keV)</option>
-    <option value="wavelength">Wavelength (Å)</option>
-  </select>
-
-  <label for="lineValue">Value:</label>
-  <input type="number" id="lineValue" step="any">
-
-  <label for="redshift">Redshift (z):</label>
-  <input type="number" id="redshift" step="any" value="0">
-
-  <button onclick="findLines()">Find Emission Lines</button>
-  <pre id="lineResult"></pre>
-
-  <!-- ================= MAIN LOGIC ================= -->
-  <script>
-    // Shortcut: hc in keV·Å
-    const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
-
-    function convert() {
-      let value = parseFloat(document.getElementById('inputValue').value);
-      let from = document.getElementById('inputUnit').value;
-      let to = document.getElementById('outputUnit').value;
-      let resultText = document.getElementById('result');
-
-      if (isNaN(value) || value <= 0) {
-        resultText.textContent = "Please enter a valid positive number.";
-        return;
-      }
-
-      let angstromValue;
-
-      if (from === "angstrom") angstromValue = value;
-      else if (from === "nm") angstromValue = value * 10;
-      else if (from === "keV") angstromValue = hc_keV_A / value;
-      else if (from === "eV") angstromValue = (hc_keV_A * 1000) / value;
-
-      let outputValue;
-      if (to === "angstrom") outputValue = angstromValue;
-      else if (to === "nm") outputValue = angstromValue / 10;
-      else if (to === "keV") outputValue = hc_keV_A / angstromValue;
-      else if (to === "eV") outputValue = (hc_keV_A * 1000) / angstromValue;
-
-      resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
-    }
-
-    function findLines() {
-      let value = parseFloat(document.getElementById('lineValue').value);
-      let unit = document.getElementById('lineUnit').value;
-      let z = parseFloat(document.getElementById('redshift').value) || 0;
-      let resultText = document.getElementById('lineResult');
-
-      if (isNaN(value) || value <= 0) {
-        resultText.textContent = "Please enter a valid positive number.";
-        return;
-      }
-
-      let inputEnergy, inputWavelength;
-
-      if (unit === "energy") {
-        inputEnergy = value;
-        inputWavelength = hc_keV_A / value;
-      } else {
-        inputWavelength = value;
-        inputEnergy = hc_keV_A / value;
-      }
-
-      let tolerance = 0.05; // ±5%
-
-      let matches = window.emissionLines.filter(line => {
-        let obsWavelength = line.wavelength * (1 + z);
-        let obsEnergy = line.energy / (1 + z);
-
-        return (
-          Math.abs((obsEnergy - inputEnergy) / inputEnergy) < tolerance ||
-          Math.abs((obsWavelength - inputWavelength) / inputWavelength) < tolerance
-        );
-      });
-
-      if (matches.length === 0) {
-        resultText.textContent = "No strong emission lines found near that value.";
-      } else {
-        let list = matches.map(line => {
-          let obsWavelength = line.wavelength * (1 + z);
-          let obsEnergy = line.energy / (1 + z);
-          return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å  
-Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
-        }).join("\n\n");
-        resultText.textContent = list;
-      }
-    }
-  </script>
-
+function findLines(){
+  let value = parseFloat(document.getElementById('lineValue').value);
+  let unit = document.getElementById('lineUnit').value;
+  let z = parseFloat(document.getElementById('redshift').value)||0;
+  let resultText = document.getElementById('lineResult');
+  if(isNaN(value)||value<=0){resultText.textContent="Please enter a valid positive number.";return;}
+  let inputEnergy = unit==="energy"?value:hc_keV_A/value;
+  let inputWavelength = unit==="wavelength"?value:hc_keV_A/value;
+  let tolerance = 0.05;
+  let matches = window.emissionLines.filter(line=>{
+    let obsWavelength = line.wavelength*(1+z);
+    let obsEnergy = line.energy/(1+z);
+    return Math.abs((obsEnergy-inputEnergy)/inputEnergy)<tolerance || Math.abs((obsWavelength-inputWavelength)/inputWavelength)<tolerance;
+  });
+  if(matches.length===0){resultText.textContent="No strong emission lines found near that value.";}
+  else{
+    resultText.textContent = matches.map(line=>{
+      let obsWavelength = line.wavelength*(1+z);
+      let obsEnergy = line.energy/(1+z);
+      return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å\nObserved (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
+    }).join("\n\n");
+  }
+}
+</script>
 </body>
 </html>
