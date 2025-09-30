@@ -1,5 +1,5 @@
 <!--Contains all emission lines in AstroNotes-->
-<script>
+
   window.emissionLines = [
     // Hydrogen
     { name: "Hydrogen Lyα", wavelength: 1216, energy: 12.39842/1216 },
@@ -20,4 +20,3 @@
 
     // ... (continue with all your other lines) ...
   ];
-</script>
