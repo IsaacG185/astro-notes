@@ -1,5 +1,5 @@
-// Shortcut for hc in keV·Å using h and c
-const hc_keV_A = (window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"]);
+// Ensure constants are loaded
+const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
 
 // Emission Lines for AstroNotes
 window.emissionLines = [
