@@ -81,7 +81,7 @@ function searchConstants() {
   }
 
   const results = Object.values(window.constants).filter(c =>
-    stripHtml(c.name).toLowerCase().includes(term)
+    c.name.toLowerCase().includes(term) // search by plain name
   );
 
   if (results.length === 0) {
@@ -89,14 +89,14 @@ function searchConstants() {
     return;
   }
 
+  // Use displayName for HTML display
   resultArea.innerHTML = results.map(c => {
     const valuesStr = Object.entries(c.values)
       .map(([unit, val]) => `${unit}: ${val.toExponential()}`)
       .join("\n");
-    return `${c.name}\nDefinition: ${c.definition}\nValues:\n${valuesStr}`;
-  }).join("\n\n--------------------\n\n");
+    return `${c.displayName}<br>Definition: ${c.definition}<br>Values:<br>${valuesStr.replace(/\n/g, "<br>")}`;
+  }).join("<br><hr><br>");
 }
-
 // ----------------- Unit Converter -----------------
 const hc_keV_A = window.constants.planck_constant_h.values["keV*s"] *
                 window.constants.speed_of_light_c.values["Å*s^-1"];
