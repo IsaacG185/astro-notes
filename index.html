@@ -187,7 +187,7 @@ function convert() {
 // Finds nearest known emission lines to user input
 // Input: energy (keV) or wavelength (Å)
 // Corrects for redshift z
-// Tolerance: 5% difference allowed
+// Tolerance: How far the resulting values can be from the input value
 // ======================================================
 function findLines() {
   let value = parseFloat(document.getElementById('lineValue').value);
@@ -203,7 +203,7 @@ function findLines() {
   // Convert user input to both energy and wavelength for comparison
   let inputEnergy = unit === "energy" ? value : hc_keV_A / value;
   let inputWavelength = unit === "wavelength" ? value : hc_keV_A / value;
-  let tolerance = 0.05; // 5% tolerance
+  let tolerance = 0.10; // 10% tolerance
 
   // Search emission line database
   let matches = window.emissionLines.filter(line => {
