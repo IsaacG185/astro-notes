@@ -4,63 +4,61 @@
 <meta charset="UTF-8">
 <title>AstroNotes</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin:auto;
-  padding:20px;
-  line-height:1.6;
-  background:#6a0dad;
-  color:white;
-}
-input, select, button {
-  padding:8px;
-  margin:5px 0;
-  width:100%;
-  border-radius:4px;
-  border:none;
-  box-sizing:border-box;
-}
-button {
-  font-size:16px;
-  font-weight:bold;
-  background:#4CAF50;
-  color:white;
-  cursor:pointer;
-}
-button:hover { background:#45a049; }
-h1,h2 { margin-top:30px; }
-pre { white-space: pre-wrap; }
-.results {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 8px;
-  background: #4b0082;
-}
-.suggestions {
-  border: 1px solid #ccc;
-  max-height: 150px;
-  overflow-y: auto;
-  background: white;
-  color: black;
-  position: absolute;
-  width: 90%;
-  z-index: 100;
-}
-.suggestion-item {
-  padding: 8px;
-  cursor: pointer;
-}
-.suggestion-item:hover {
-  background: #eee;
-}
+  body { 
+    font-family: Arial; 
+    max-width: 700px; 
+    margin: auto; 
+    padding: 20px; 
+    line-height: 1.6; 
+    background: #6a0dad; 
+    color: white; 
+  }
+  input, select, button { 
+    padding: 8px; 
+    margin: 5px 0; 
+    width: 100%; 
+    border-radius: 4px; 
+    border: none; 
+    box-sizing: border-box; 
+  }
+  button { 
+    font-size: 16px; 
+    font-weight: bold; 
+    background: #4CAF50; 
+    color: white; 
+    cursor: pointer; 
+  }
+  button:hover { background: #45a049; }
+  h1, h2 { margin-top: 30px; }
+  pre { white-space: pre-wrap; }
+  hr {
+    border: none;
+    border-top: 2px solid #ddd;
+    margin: 40px 0;
+  }
+  #constantResults { margin-top: 10px; }
+  #constantResults ul {
+    list-style-type: none; /* Removes bullets */
+    padding-left: 0; 
+    margin: 0; 
+  }
 </style>
 </head>
 <body>
 
+<!-- Load constants and emission line definitions -->
 <script src="constants.js"></script>
 <script src="emissionLines.js"></script>
 
+<!-- ===================== Constant Finder ===================== -->
+<h1>Constant Finder</h1>
+<label for="constantSearch">Search for a constant:</label>
+<input type="text" id="constantSearch" placeholder="e.g., Planck, speed of light, Sun radius">
+<div id="constantResults"></div>
+
+<hr>
+
+<!-- ===================== Unit Converter ===================== -->
 <h1>Astro Unit Converter</h1>
 <label for="inputUnit">From:</label>
 <select id="inputUnit">
@@ -73,6 +71,7 @@ pre { white-space: pre-wrap; }
     <option value="nm">nm</option>
   </optgroup>
 </select>
+
 <label for="outputUnit">To:</label>
 <select id="outputUnit">
   <optgroup label="Energy">
@@ -84,11 +83,15 @@ pre { white-space: pre-wrap; }
     <option value="nm">nm</option>
   </optgroup>
 </select>
+
 <label for="inputValue">Value:</label>
 <input type="number" id="inputValue" step="any">
 <button onclick="convert()">Convert</button>
 <h2 id="result"></h2>
 
+<hr>
+
+<!-- ===================== Emission Line Finder ===================== -->
 <h1>Emission Line Finder</h1>
 <label for="lineUnit">Input type:</label>
 <select id="lineUnit">
@@ -102,108 +105,128 @@ pre { white-space: pre-wrap; }
 <button onclick="findLines()">Find Emission Lines</button>
 <pre id="lineResult"></pre>
 
-<h1>Constant Finder</h1>
-<div class="search-container">
-  <input type="text" id="constantSearch" placeholder="Search for a constant...">
-  <div id="suggestions" class="suggestions"></div>
-</div>
-<div id="constantResult" class="results" style="display:none;"></div>
-
 <script>
-const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
+// ======================================================
+// Define hc in units of keV·Å using constants.js values
+// Planck's constant (keV*s) × Speed of light (Å*s^-1)
+// ======================================================
+const hc_keV_A = window.constants.h.values["keV*s"] * window.constants.c.values["Å*s^-1"];
 
-// ==== Unit Converter ====
+// ======================================================
+// CONSTANT FINDER TOOL
+// Lets user search constants.js for physical constants
+// Shows: name, definition, and values in different units
+// ======================================================
+const searchBox = document.getElementById("constantSearch");
+const resultsDiv = document.getElementById("constantResults");
+
+searchBox.addEventListener("input", () => {
+  let query = searchBox.value.toLowerCase().trim();
+  if (!query) { 
+    resultsDiv.innerHTML = ""; 
+    return; 
+  }
+
+  // Match against key or full name
+  let matches = Object.entries(window.constants).filter(([key, c]) => 
+    key.toLowerCase().includes(query) || 
+    c.name.toLowerCase().includes(query)
+  );
+
+  if (matches.length === 0) {
+    resultsDiv.innerHTML = "<p>No constants found.</p>";
+    return;
+  }
+
+  // Display results with all units
+  resultsDiv.innerHTML = matches.map(([key, c]) => `
+    <h3>${c.name} (${key})</h3>
+    <p>${c.definition}</p>
+    <ul>
+      ${Object.entries(c.values).map(([unit, val]) => 
+        `<li>${val} ${unit}</li>`).join("")}
+    </ul>
+  `).join("<hr>");
+});
+
+// ======================================================
+// UNIT CONVERTER
+// Converts between eV, keV, Å, and nm
+// Uses hc_keV_A to convert between energy and wavelength
+// ======================================================
 function convert() {
   let value = parseFloat(document.getElementById('inputValue').value);
   let from = document.getElementById('inputUnit').value;
   let to = document.getElementById('outputUnit').value;
   let resultText = document.getElementById('result');
-  if(isNaN(value)||value<=0){resultText.textContent="Please enter a valid positive number.";return;}
-  let angstromValue = from==="angstrom"?value:from==="nm"?value*10:from==="keV"?hc_keV_A/value:(hc_keV_A*1000)/value;
-  let outputValue = to==="angstrom"?angstromValue:to==="nm"?angstromValue/10:to==="keV"?hc_keV_A/angstromValue:(hc_keV_A*1000)/angstromValue;
-  resultText.textContent=`${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
+
+  if (isNaN(value) || value <= 0) {
+    resultText.textContent = "Please enter a valid positive number.";
+    return;
+  }
+
+  // Convert input to Å first (universal intermediate unit)
+  let angstromValue = 
+    from === "angstrom" ? value :
+    from === "nm" ? value * 10 :
+    from === "keV" ? hc_keV_A / value :
+    (hc_keV_A * 1000) / value; // eV → Å
+
+  // Convert Å to desired output
+  let outputValue =
+    to === "angstrom" ? angstromValue :
+    to === "nm" ? angstromValue / 10 :
+    to === "keV" ? hc_keV_A / angstromValue :
+    (hc_keV_A * 1000) / angstromValue; // Å → eV
+
+  resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
 }
 
-// ==== Emission Line Finder ====
-function findLines(){
+// ======================================================
+// EMISSION LINE FINDER
+// Finds nearest known emission lines to user input
+// Input: energy (keV) or wavelength (Å)
+// Corrects for redshift z
+// Tolerance: 5% difference allowed
+// ======================================================
+function findLines() {
   let value = parseFloat(document.getElementById('lineValue').value);
   let unit = document.getElementById('lineUnit').value;
-  let z = parseFloat(document.getElementById('redshift').value)||0;
+  let z = parseFloat(document.getElementById('redshift').value) || 0;
   let resultText = document.getElementById('lineResult');
-  if(isNaN(value)||value<=0){resultText.textContent="Please enter a valid positive number.";return;}
-  let inputEnergy = unit==="energy"?value:hc_keV_A/value;
-  let inputWavelength = unit==="wavelength"?value:hc_keV_A/value;
-  let tolerance = 0.05;
-  let matches = window.emissionLines.filter(line=>{
-    let obsWavelength = line.wavelength*(1+z);
-    let obsEnergy = line.energy/(1+z);
-    return Math.abs((obsEnergy-inputEnergy)/inputEnergy)<tolerance || Math.abs((obsWavelength-inputWavelength)/inputWavelength)<tolerance;
+
+  if (isNaN(value) || value <= 0) {
+    resultText.textContent = "Please enter a valid positive number.";
+    return;
+  }
+
+  // Convert user input to both energy and wavelength for comparison
+  let inputEnergy = unit === "energy" ? value : hc_keV_A / value;
+  let inputWavelength = unit === "wavelength" ? value : hc_keV_A / value;
+  let tolerance = 0.05; // 5% tolerance
+
+  // Search emission line database
+  let matches = window.emissionLines.filter(line => {
+    let obsWavelength = line.wavelength * (1 + z);
+    let obsEnergy = line.energy / (1 + z);
+    return (
+      Math.abs((obsEnergy - inputEnergy) / inputEnergy) < tolerance ||
+      Math.abs((obsWavelength - inputWavelength) / inputWavelength) < tolerance
+    );
   });
-  if(matches.length===0){resultText.textContent="No strong emission lines found near that value.";}
-  else{
-    resultText.textContent = matches.map(line=>{
-      let obsWavelength = line.wavelength*(1+z);
-      let obsEnergy = line.energy/(1+z);
-      return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å\nObserved (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
+
+  // Display matches
+  if (matches.length === 0) {
+    resultText.textContent = "No strong emission lines found near that value.";
+  } else {
+    resultText.textContent = matches.map(line => {
+      let obsWavelength = line.wavelength * (1 + z);
+      let obsEnergy = line.energy / (1 + z);
+      return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å
+Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
     }).join("\n\n");
   }
 }
-
-// ==== Constant Finder ====
-const searchInput = document.getElementById("constantSearch");
-const suggestionsBox = document.getElementById("suggestions");
-const resultBox = document.getElementById("constantResult");
-
-function displayConstant(key, constant) {
-  let html = `
-    <div class="result-title">${constant.name}</div>
-    <p><b>Definition:</b> ${constant.definition || "N/A"}</p>
-    <p><b>Values:</b></p>
-    <ul>
-  `;
-  for (const [unit, val] of Object.entries(constant.values)) {
-    html += `<li>${val} ${unit}</li>`;
-  }
-  html += "</ul>";
-  resultBox.innerHTML = html;
-  resultBox.style.display = "block";
-}
-
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase();
-  suggestionsBox.innerHTML = "";
-  if (!query) return;
-
-  const matches = Object.keys(window.constants).filter(key =>
-    key.toLowerCase().includes(query) ||
-    window.constants[key].name.toLowerCase().includes(query)
-  );
-
-  matches.forEach(key => {
-    const item = document.createElement("div");
-    item.className = "suggestion-item";
-    item.textContent = `${key} (${window.constants[key].name})`;
-    item.addEventListener("click", () => {
-      searchInput.value = key;
-      suggestionsBox.innerHTML = "";
-      displayConstant(key, window.constants[key]);
-    });
-    suggestionsBox.appendChild(item);
-  });
-});
-
-searchInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const query = searchInput.value.toLowerCase();
-    const key = Object.keys(window.constants).find(k =>
-      k.toLowerCase() === query || window.constants[k].name.toLowerCase() === query
-    );
-    if (key) {
-      displayConstant(key, window.constants[key]);
-      suggestionsBox.innerHTML = "";
-    }
-  }
-});
 </script>
 </body>
 </html>
