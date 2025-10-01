@@ -121,6 +121,19 @@ window.constants = {
       "M<sub>⊙</sub>": 1.5e12,
       "kg": 2.98e42
     }
-  }
+  },
+
+  reduced_planck_constant_hbar: {
+    name: "Reduced Planck constant hbar",
+    displayName: "Reduced Planck constant (ℏ)",
+    definition: "Planck constant divided by 2π, used in quantum mechanics.",
+    values: {
+      "J*s": 1.054571817e-34,        // h / 2π
+      "erg*s": 1.054571817e-27,      // h / 2π
+      "eV*s": 6.582119569e-16,       // h / 2π
+      "keV*s": 6.582119569e-19       // h / 2π
+    }
+  },
+
 
 };
