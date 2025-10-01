@@ -96,6 +96,8 @@ window.emissionLines = [
   { name: "[Fe VII]", wavelength: 6087, energy: hc_keV_A / 6087 },       // ≈ 0.00204 keV
   { name: "[Fe X]", wavelength: 6374, energy: hc_keV_A / 6374 },         // ≈ 0.00195 keV
   { name: "[Fe XIV]", wavelength: 5303, energy: hc_keV_A / 5303 }        // ≈ 0.00234 keV
+
+  // More emission lines can be added here...
 ];
   
 })();
