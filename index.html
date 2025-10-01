@@ -4,12 +4,56 @@
 <meta charset="UTF-8">
 <title>AstroNotes</title>
 <style>
-body { font-family: Arial; max-width: 700px; margin:auto; padding:20px; line-height:1.6; background:#6a0dad; color:white; }
-input, select, button { padding:8px; margin:5px 0; width:100%; border-radius:4px; border:none; box-sizing:border-box; }
-button { font-size:16px; font-weight:bold; background:#4CAF50; color:white; cursor:pointer; }
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin:auto;
+  padding:20px;
+  line-height:1.6;
+  background:#6a0dad;
+  color:white;
+}
+input, select, button {
+  padding:8px;
+  margin:5px 0;
+  width:100%;
+  border-radius:4px;
+  border:none;
+  box-sizing:border-box;
+}
+button {
+  font-size:16px;
+  font-weight:bold;
+  background:#4CAF50;
+  color:white;
+  cursor:pointer;
+}
 button:hover { background:#45a049; }
 h1,h2 { margin-top:30px; }
 pre { white-space: pre-wrap; }
+.results {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #4b0082;
+}
+.suggestions {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background: white;
+  color: black;
+  position: absolute;
+  width: 90%;
+  z-index: 100;
+}
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+.suggestion-item:hover {
+  background: #eee;
+}
 </style>
 </head>
 <body>
@@ -20,29 +64,55 @@ pre { white-space: pre-wrap; }
 <h1>Astro Unit Converter</h1>
 <label for="inputUnit">From:</label>
 <select id="inputUnit">
-  <optgroup label="Energy"><option value="eV">eV</option><option value="keV">keV</option></optgroup>
-  <optgroup label="Wavelength"><option value="angstrom">Å</option><option value="nm">nm</option></optgroup>
+  <optgroup label="Energy">
+    <option value="eV">eV</option>
+    <option value="keV">keV</option>
+  </optgroup>
+  <optgroup label="Wavelength">
+    <option value="angstrom">Å</option>
+    <option value="nm">nm</option>
+  </optgroup>
 </select>
 <label for="outputUnit">To:</label>
 <select id="outputUnit">
-  <optgroup label="Energy"><option value="eV">eV</option><option value="keV">keV</option></optgroup>
-  <optgroup label="Wavelength"><option value="angstrom">Å</option><option value="nm">nm</option></optgroup>
+  <optgroup label="Energy">
+    <option value="eV">eV</option>
+    <option value="keV">keV</option>
+  </optgroup>
+  <optgroup label="Wavelength">
+    <option value="angstrom">Å</option>
+    <option value="nm">nm</option>
+  </optgroup>
 </select>
-<label for="inputValue">Value:</label><input type="number" id="inputValue" step="any">
+<label for="inputValue">Value:</label>
+<input type="number" id="inputValue" step="any">
 <button onclick="convert()">Convert</button>
 <h2 id="result"></h2>
 
 <h1>Emission Line Finder</h1>
 <label for="lineUnit">Input type:</label>
-<select id="lineUnit"><option value="energy">Energy (keV)</option><option value="wavelength">Wavelength (Å)</option></select>
-<label for="lineValue">Value:</label><input type="number" id="lineValue" step="any">
-<label for="redshift">Redshift (z):</label><input type="number" id="redshift" step="any" value="0">
+<select id="lineUnit">
+  <option value="energy">Energy (keV)</option>
+  <option value="wavelength">Wavelength (Å)</option>
+</select>
+<label for="lineValue">Value:</label>
+<input type="number" id="lineValue" step="any">
+<label for="redshift">Redshift (z):</label>
+<input type="number" id="redshift" step="any" value="0">
 <button onclick="findLines()">Find Emission Lines</button>
 <pre id="lineResult"></pre>
+
+<h1>Constant Finder</h1>
+<div class="search-container">
+  <input type="text" id="constantSearch" placeholder="Search for a constant...">
+  <div id="suggestions" class="suggestions"></div>
+</div>
+<div id="constantResult" class="results" style="display:none;"></div>
 
 <script>
 const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
 
+// ==== Unit Converter ====
 function convert() {
   let value = parseFloat(document.getElementById('inputValue').value);
   let from = document.getElementById('inputUnit').value;
@@ -54,6 +124,7 @@ function convert() {
   resultText.textContent=`${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
 }
 
+// ==== Emission Line Finder ====
 function findLines(){
   let value = parseFloat(document.getElementById('lineValue').value);
   let unit = document.getElementById('lineUnit').value;
@@ -77,6 +148,62 @@ function findLines(){
     }).join("\n\n");
   }
 }
+
+// ==== Constant Finder ====
+const searchInput = document.getElementById("constantSearch");
+const suggestionsBox = document.getElementById("suggestions");
+const resultBox = document.getElementById("constantResult");
+
+function displayConstant(key, constant) {
+  let html = `
+    <div class="result-title">${constant.name}</div>
+    <p><b>Definition:</b> ${constant.definition || "N/A"}</p>
+    <p><b>Values:</b></p>
+    <ul>
+  `;
+  for (const [unit, val] of Object.entries(constant.values)) {
+    html += `<li>${val} ${unit}</li>`;
+  }
+  html += "</ul>";
+  resultBox.innerHTML = html;
+  resultBox.style.display = "block";
+}
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
+  suggestionsBox.innerHTML = "";
+  if (!query) return;
+
+  const matches = Object.keys(window.constants).filter(key =>
+    key.toLowerCase().includes(query) ||
+    window.constants[key].name.toLowerCase().includes(query)
+  );
+
+  matches.forEach(key => {
+    const item = document.createElement("div");
+    item.className = "suggestion-item";
+    item.textContent = `${key} (${window.constants[key].name})`;
+    item.addEventListener("click", () => {
+      searchInput.value = key;
+      suggestionsBox.innerHTML = "";
+      displayConstant(key, window.constants[key]);
+    });
+    suggestionsBox.appendChild(item);
+  });
+});
+
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = searchInput.value.toLowerCase();
+    const key = Object.keys(window.constants).find(k =>
+      k.toLowerCase() === query || window.constants[k].name.toLowerCase() === query
+    );
+    if (key) {
+      displayConstant(key, window.constants[key]);
+      suggestionsBox.innerHTML = "";
+    }
+  }
+});
 </script>
 </body>
 </html>
