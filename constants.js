@@ -1,6 +1,17 @@
+/**
+ * Constants for AstroNotes
+ * Each constant has the following properties:
+ * - name: plain text used for searching (no HTML tags)
+ * - displayName: HTML formatted string for display (can include symbols/subscripts)
+ * - definition: textual description of the constant
+ * - values: object mapping units to numeric values
+ */
+
 window.constants = {
+
   planck_constant_h: {
-    name: "Planck's constant (h)",
+    name: "Planck constant h",
+    displayName: "Planck constant (h)",
     definition: "Relates the energy of a photon to its frequency.",
     values: {
       "J*s": 6.62607015e-34,
@@ -11,7 +22,8 @@ window.constants = {
   },
 
   speed_of_light_c: {
-    name: "Speed of Light (c)",
+    name: "Speed of light c",
+    displayName: "Speed of Light (c)",
     definition: "Universal constant for the speed of light in vacuum.",
     values: {
       "m*s^-1": 2.99792458e8,
@@ -21,8 +33,9 @@ window.constants = {
     }
   },
 
-  boltzmann_constant_k_B: {
-    name: "Boltzmann constant (k<sub>B</sub>)",
+  boltzmann_constant_kB: {
+    name: "Boltzmann constant kB",
+    displayName: "Boltzmann constant (k<sub>B</sub>)",
     definition: "Relates temperature to thermal energy.",
     values: {
       "J*K^-1": 1.380649e-23,
@@ -31,8 +44,9 @@ window.constants = {
     }
   },
 
-  stefan_boltzmann_constant_σ: {
-    name: "Stefan–Boltzmann constant (σ)",
+  stefan_boltzmann_constant_sigma: {
+    name: "Stefan-Boltzmann constant sigma",
+    displayName: "Stefan–Boltzmann constant (σ)",
     definition: "Constant of proportionality in Stefan–Boltzmann law.",
     values: {
       "W*m^-2*K^-4": 5.670374419e-8
@@ -40,7 +54,8 @@ window.constants = {
   },
 
   universal_gravitational_constant_G: {
-    name: "Universal Gravitational constant (G)",
+    name: "Gravitational constant G",
+    displayName: "Universal Gravitational Constant (G)",
     definition: "Proportionality factor in Newton’s law of gravitation.",
     values: {
       "m^3*kg^-1*s^-2": 6.67430e-11
@@ -48,7 +63,8 @@ window.constants = {
   },
 
   electronvolt_eV: {
-    name: "Electronvolt (eV)",
+    name: "Electronvolt eV",
+    displayName: "Electronvolt (eV)",
     definition: "Energy gained by an electron when accelerated through 1 volt.",
     values: {
       "J": 1.602176634e-19,
@@ -57,8 +73,9 @@ window.constants = {
     }
   },
 
-  earth_radius_r_⊕: {
-    name: "Earth radius (r<sub>⊕</sub>)",
+  earth_radius_R_earth: {
+    name: "Earth radius",
+    displayName: "Earth radius (R<sub>⊕</sub>)",
     definition: "Mean radius of Earth.",
     values: {
       "m": 6.371e6,
@@ -66,8 +83,9 @@ window.constants = {
     }
   },
 
-  earth_mass_m_⊕: {
-    name: "Earth mass (m<sub>⊕</sub>)",
+  earth_mass_M_earth: {
+    name: "Earth mass",
+    displayName: "Earth mass (M<sub>⊕</sub>)",
     definition: "Mass of Earth.",
     values: {
       "kg": 5.972e24,
@@ -75,8 +93,9 @@ window.constants = {
     }
   },
 
-  solar_radius_r_⊙: {
-    name: "Solar radius (r<sub>⊙</sub>)",
+  solar_radius_R_sun: {
+    name: "Solar radius",
+    displayName: "Solar radius (R<sub>⊙</sub>)",
     definition: "Mean radius of the Sun.",
     values: {
       "m": 6.957e8,
@@ -84,8 +103,9 @@ window.constants = {
     }
   },
 
- solar_mass_m_⊙: {
-    name: "Solar mass (m<sub>⊙</sub>)",
+  solar_mass_M_sun: {
+    name: "Solar mass",
+    displayName: "Solar mass (M<sub>⊙</sub>)",
     definition: "Mass of the Sun.",
     values: {
       "kg": 1.989e30,
@@ -93,12 +113,14 @@ window.constants = {
     }
   },
 
-  milky_way_mass_m_MW: {
-    name: "Milky Way mass (m<sub>MW</sub>)",
+  milky_way_mass_M_MW: {
+    name: "Milky Way mass",
+    displayName: "Milky Way mass (M<sub>MW</sub>)",
     definition: "Estimated total mass of the Milky Way galaxy (stars + gas + dark matter).",
     values: {
       "M<sub>⊙</sub>": 1.5e12,
       "kg": 2.98e42
     }
   }
+
 };
