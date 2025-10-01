@@ -96,8 +96,12 @@ function searchConstants() {
   const valuesStr = Object.entries(c.values)
     .map(([unit, val]) => `${val.toExponential()} ${unit}`)
     .join("<br>");
-  return `${c.displayName}<br>Definition: ${c.definition}<br>Values:<br>${valuesStr}`;
-}).join("<br><hr><br>");
+  
+  return `<div style="font-size:1.3em; font-weight:bold;">${c.displayName}</div>
+          <div>Definition: ${c.definition}</div>
+          <div>Values:<br>${valuesStr}</div>`;
+}).join("<hr style='border:1px solid white; margin:10px 0;'>");
+  
 }
 // ----------------- Unit Converter -----------------
 const hc_keV_A = window.constants.planck_constant_h.values["keV*s"] *
