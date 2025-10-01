@@ -93,11 +93,11 @@ function searchConstants() {
 
   // Use displayName for HTML display
   resultArea.innerHTML = results.map(c => {
-    const valuesStr = Object.entries(c.values)
-      .map(([unit, val]) => `${unit}: ${val.toExponential()}`)
-      .join("\n");
-    return `${c.displayName}<br>Definition: ${c.definition}<br>Values:<br>${valuesStr.replace(/\n/g, "<br>")}`;
-  }).join("<br><hr><br>");
+  const valuesStr = Object.entries(c.values)
+    .map(([unit, val]) => `${val.toExponential()} ${unit}`)
+    .join("<br>");
+  return `${c.displayName}<br>Definition: ${c.definition}<br>Values:<br>${valuesStr}`;
+}).join("<br><hr><br>");
 }
 // ----------------- Unit Converter -----------------
 const hc_keV_A = window.constants.planck_constant_h.values["keV*s"] *
