@@ -83,7 +83,7 @@ function searchConstants() {
   }
 
   const results = Object.values(window.constants).filter(c =>
-    c.name.toLowerCase().includes(term) // search by plain name
+    stripHtml(c.name).toLowerCase().includes(term)
   );
 
   if (results.length === 0) {
@@ -91,16 +91,17 @@ function searchConstants() {
     return;
   }
 
-  // Use displayName for HTML display
   resultArea.innerHTML = results.map(c => {
-  const valuesStr = Object.entries(c.values)
-    .map(([unit, val]) => `${val.toExponential()} ${unit}`)
-    .join("<br>");
-  
-  return `<div style="font-size:1.3em; font-weight:bold;">${c.displayName}</div>
-          <div>Definition: ${c.definition}</div>
-          <div>Values:<br>${valuesStr}</div>`;
-}).join("<hr style='border:1px solid white; margin:10px 0;'>");
+    const valuesStr = Object.entries(c.values)
+      .map(([unit, val]) => `${val.toExponential()} ${unit}`)
+      .join("<br>");
+    
+    return `
+      <div style="font-size:1.3em; font-weight:bold; margin-bottom:4px;">${c.displayName}</div>
+      <div style="font-size:1.1em; margin:2px 0;">Definition: ${c.definition}</div>
+      <div style="font-size:1.1em; margin:2px 0;">Values:<br>${valuesStr}</div>
+    `;
+  }).join("<hr style='border:1px solid white; margin:10px 0;'>");
   
 }
 // ----------------- Unit Converter -----------------
