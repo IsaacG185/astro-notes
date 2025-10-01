@@ -7,7 +7,7 @@
   }
 
   // Calculated for brevity.
-  const hc_keV_A = window.constants.h.values["keV·s"] * window.constants.c.values["Å/s"];
+  const hc_keV_A = window.constants.h.values["keV*s"] * window.constants.c.values["Å*s^-1"];
 
   // Emission Lines for AstroNotes
 window.emissionLines = [
