@@ -57,9 +57,37 @@ window.emissionLines = [
   { name: "Mg XII Lyα", wavelength: 8.42, energy: hc_keV_A / 8.42 },     // ≈ 1.472 keV
 
   // ================= Silicon =================
+  // Infrared [Si II]
   { name: "[Si II] 34.8μm", wavelength: 348000, energy: hc_keV_A / 348000 }, // ≈ 3.56e-5 keV
-  { name: "Si XIII", wavelength: 6.65, energy: hc_keV_A / 6.65 },        // ≈ 1.864 keV
-  { name: "Si XIV Lyα", wavelength: 6.18, energy: hc_keV_A / 6.18 },     // ≈ 2.006 keV
+
+  // UV [Si II]
+  { name: "[Si II] 1260", wavelength: 1260, energy: hc_keV_A / 1260 },       // ≈ 0.00984 keV
+  { name: "[Si II] 1526", wavelength: 1526, energy: hc_keV_A / 1526 },       // ≈ 0.00813 keV
+  { name: "[Si II] 1808", wavelength: 1808, energy: hc_keV_A / 1808 },       // ≈ 0.00686 keV
+
+  // UV Si III]
+  { name: "Si III] 1206", wavelength: 1206, energy: hc_keV_A / 1206 },       // ≈ 0.0103 keV
+
+  // UV Si IV doublet
+  { name: "Si IV 1394", wavelength: 1394, energy: hc_keV_A / 1394 },         // ≈ 0.00890 keV
+  { name: "Si IV 1403", wavelength: 1403, energy: hc_keV_A / 1403 },         // ≈ 0.00884 keV
+
+  // X-ray He-like Si XIII triplet (r, i, f)
+  { name: "Si XIII (res)", wavelength: 6.65, energy: hc_keV_A / 6.65 },      // ≈ 1.864 keV
+  { name: "Si XIII (int)", wavelength: 6.68, energy: hc_keV_A / 6.68 },      // ≈ 1.856 keV
+  { name: "Si XIII (forb)", wavelength: 6.74, energy: hc_keV_A / 6.74 },     // ≈ 1.840 keV
+
+  // X-ray H-like Si XIV Lyman series
+  { name: "Si XIV Lyα", wavelength: 6.18, energy: hc_keV_A / 6.18 },         // ≈ 2.006 keV
+  { name: "Si XIV Lyβ", wavelength: 5.22, energy: hc_keV_A / 5.22 },         // ≈ 2.38 keV
+  { name: "Si XIV Lyγ", wavelength: 4.95, energy: hc_keV_A / 4.95 },         // ≈ 2.50 keV
+  { name: "Si XIV Lyδ", wavelength: 4.85, energy: hc_keV_A / 4.85 },         // ≈ 2.56 keV
+
+  // X-ray fluorescence (characteristic lines)
+  { name: "Si Kα", wavelength: 7.12, energy: hc_keV_A / 7.12 },              // ≈ 1.74 keV
+  { name: "Si Kβ", wavelength: 6.75, energy: hc_keV_A / 6.75 },              // ≈ 1.84 keV
+  { name: "Si Kγ",  wavelength: 6.64795, energy: hc_keV_A / 6.64795 }, // E ≈ 1.865 keV (Kγ, weaker)
+  { name: "Si Kδ", wavelength: 6.40000, energy: hc_keV_A / 6.40000 },  // ~1.937 keV (approx; very weak / rarely listed)
 
   // ================= Sulfur =================
   { name: "[S II] 6716", wavelength: 6716, energy: hc_keV_A / 6716 },    // ≈ 0.00185 keV
