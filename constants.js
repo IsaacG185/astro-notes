@@ -135,5 +135,6 @@ window.constants = {
     }
   },
 
+  // Luminosity of sun, parsec, ly, 1 J, 1 N, 1 W, density
   // Add more constants as necessary...
 };
