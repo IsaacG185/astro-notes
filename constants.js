@@ -135,6 +135,6 @@ window.constants = {
     }
   },
 
-  // Luminosity of sun, parsec, ly, 1 J, 1 N, 1 W, density
+  // Luminosity of sun, parsec, ly, 1 J, 1 N, 1 W, density, de broglie wavelength, mass of proton, mass of electron
   // Add more constants as necessary...
 };
