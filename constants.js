@@ -135,6 +135,111 @@ window.constants = {
     }
   },
 
-  // Luminosity of sun, parsec, ly, 1 J, 1 N, 1 W, density, de broglie wavelength, mass of proton, mass of electron
+  luminosity_of_sun: {
+  name: "Luminosity of the Sun",
+  displayName: "Solar Luminosity (L☉)",
+  definition: "Total power output of the Sun across all wavelengths.",
+  values: {
+    "W": 3.828*10^26,
+    "J/s": 3.828*10^26,
+    "kg*m^2/s^3": 3.828*10^26,
+    "erg/s": 3.828*10^33
+  }
+},
+
+parsec: {
+  name: "Parsec",
+  displayName: "Parsec (pc)",
+  definition: "Distance at which 1 astronomical unit subtends an angle of one arcsecond.",
+  values: {
+    "m": 3.0857*10^16,
+    "km": 3.0857*10^13,
+    "ly": 3.26156,
+    "AU": 206265
+  }
+},
+
+light_year: {
+  name: "Light-year",
+  displayName: "Light-year (ly)",
+  definition: "Distance that light travels in one Julian year in vacuum.",
+  values: {
+    "m": 9.4607*10^15,
+    "km": 9.4607*10^12,
+    "mi": 5.8786*10^12,
+    "AU": 63241.1
+  }
+},
+
+joule: {
+  name: "Joule",
+  displayName: "Joule (J)",
+  definition: "SI unit of energy; equal to one newton meter.",
+  values: {
+    "N*m": 1,
+    "kg*m^2/s^2": 1,
+    "erg": 1*10^7,
+    "eV": 6.241509074*10^18
+  }
+},
+
+newton: {
+  name: "Newton",
+  displayName: "Newton (N)",
+  definition: "SI unit of force; the force required to accelerate one kilogram by one meter per second squared.",
+  values: {
+    "kg*m/s^2": 1,
+    "dyn": 1*10^5,
+    "lbf": 0.2248089431
+  }
+},
+
+watt: {
+  name: "Watt",
+  displayName: "Watt (W)",
+  definition: "SI unit of power; one joule per second.",
+  values: {
+    "J/s": 1,
+    "N*m/s": 1,
+    "kg*m^2/s^3": 1,
+    "erg/s": 1*10^7
+  }
+},
+
+density_of_water: {
+  name: "Density of Water",
+  displayName: "Density of Water (ρ<sub>water</sub>)",
+  definition: "Approximate density of water at 4°C.",
+  values: {
+    "kg/m^3": 1000,
+    "g/cm^3": 1,
+    "lb/ft^3": 62.428
+  }
+},
+
+mass_of_proton: {
+  name: "Mass of Proton",
+  displayName: "Proton Mass (mₚ)",
+  definition: "Rest mass of a proton.",
+  values: {
+    "kg": 1.67262192369*10^-27,
+    "g": 1.67262192369*10^-24,
+    "u": 1.007276466621,
+    "MeV/c^2": 938.27208816
+  }
+},
+
+mass_of_electron: {
+  name: "Mass of Electron",
+  displayName: "Electron Mass (mₑ)",
+  definition: "Rest mass of an electron.",
+  values: {
+    "kg": 9.1093837015*10^-31,
+    "g": 9.1093837015*10^-28,
+    "u": 5.48579909065*10^-4,
+    "MeV/c^2": 0.510998950
+  }
+},
+  // de broglie wavelength
   // Add more constants as necessary...
 };
