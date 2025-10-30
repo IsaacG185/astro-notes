@@ -14,10 +14,10 @@ window.constants = {
     displayName: "Planck constant (h)",
     definition: "Relates the energy of a photon to its frequency.",
     values: {
-      "J*s": 6.62607015e-34,
-      "erg*s": 6.62607015e-27,
-      "eV*s": 4.135667696e-15,
-      "keV*s": 4.135667696e-18
+      "J*s": 6.62607015*10^-34,
+      "erg*s": 6.62607015*10^-27,
+      "eV*s": 4.135667696*10^-15,
+      "keV*s": 4.135667696*10^-18
     }
   },
 
@@ -26,10 +26,10 @@ window.constants = {
     displayName: "Speed of Light (c)",
     definition: "Universal constant for the speed of light in vacuum.",
     values: {
-      "m*s^-1": 2.99792458e8,
-      "cm*s^-1": 2.99792458e10,
-      "km*s^-1": 2.99792458e5,
-      "Å*s^-1": 2.99792458e18
+      "m*s^-1": 2.99792458*10^8,
+      "cm*s^-1": 2.99792458*10^10,
+      "km*s^-1": 2.99792458*10^5,
+      "Å*s^-1": 2.99792458*10^18
     }
   },
 
@@ -38,9 +38,9 @@ window.constants = {
     displayName: "Boltzmann constant (k<sub>B</sub>)",
     definition: "Relates temperature to thermal energy.",
     values: {
-      "J*K^-1": 1.380649e-23,
-      "erg*K^-1": 1.380649e-16,
-      "eV*K^-1": 8.617333262e-5
+      "J*K^-1": 1.380649*10^-23,
+      "erg*K^-1": 1.380649*10^-16,
+      "eV*K^-1": 8.617333262*10^-5
     }
   },
 
@@ -49,7 +49,7 @@ window.constants = {
     displayName: "Stefan–Boltzmann constant (σ)",
     definition: "Constant of proportionality in Stefan–Boltzmann law.",
     values: {
-      "W*m^-2*K^-4": 5.670374419e-8
+      "W*m^-2*K^-4": 5.670374419*10^-8
     }
   },
 
@@ -58,7 +58,7 @@ window.constants = {
     displayName: "Universal Gravitational Constant (G)",
     definition: "Proportionality factor in Newton’s law of gravitation.",
     values: {
-      "m^3*kg^-1*s^-2": 6.67430e-11
+      "m^3*kg^-1*s^-2": 6.67430*10^-11
     }
   },
 
@@ -67,9 +67,9 @@ window.constants = {
     displayName: "Electronvolt (eV)",
     definition: "Energy gained by an electron when accelerated through 1 volt.",
     values: {
-      "J": 1.602176634e-19,
-      "erg": 1.602176634e-12,
-      "keV": 1e-3
+      "J": 1.602176634*10^-19,
+      "erg": 1.602176634*10^-12,
+      "keV": 1*10^-3
     }
   },
 
@@ -78,7 +78,7 @@ window.constants = {
     displayName: "Earth radius (R<sub>⊕</sub>)",
     definition: "Mean radius of Earth.",
     values: {
-      "m": 6.371e6,
+      "m": 6.371^10^6,
       "km": 6371
     }
   },
@@ -88,8 +88,8 @@ window.constants = {
     displayName: "Earth mass (M<sub>⊕</sub>)",
     definition: "Mass of Earth.",
     values: {
-      "kg": 5.972e24,
-      "g": 5.972e27
+      "kg": 5.972*10^24,
+      "g": 5.972*10^27
     }
   },
 
@@ -98,8 +98,8 @@ window.constants = {
     displayName: "Solar radius (R<sub>⊙</sub>)",
     definition: "Mean radius of the Sun.",
     values: {
-      "m": 6.957e8,
-      "km": 6.957e5
+      "m": 6.957*10^8,
+      "km": 6.957*10^5
     }
   },
 
@@ -108,8 +108,8 @@ window.constants = {
     displayName: "Solar mass (M<sub>⊙</sub>)",
     definition: "Mass of the Sun.",
     values: {
-      "kg": 1.989e30,
-      "g": 1.989e33
+      "kg": 1.989*10^30,
+      "g": 1.989*10^33
     }
   },
 
@@ -118,8 +118,8 @@ window.constants = {
     displayName: "Milky Way mass (M<sub>MW</sub>)",
     definition: "Estimated total mass of the Milky Way galaxy (stars + gas + dark matter).",
     values: {
-      "M<sub>⊙</sub>": 1.5e12,
-      "kg": 2.98e42
+      "M<sub>⊙</sub>": 1.5*10^12,
+      "kg": 2.98*10^42
     }
   },
 
@@ -128,15 +128,15 @@ window.constants = {
     displayName: "Reduced Planck constant (ℏ)",
     definition: "Planck constant divided by 2π, used in quantum mechanics.",
     values: {
-      "J*s": 1.054571817e-34,        // h / 2π
-      "erg*s": 1.054571817e-27,      // h / 2π
-      "eV*s": 6.582119569e-16,       // h / 2π
-      "keV*s": 6.582119569e-19       // h / 2π
+      "J*s": 1.054571817*10^-34,        // h / 2π
+      "erg*s": 1.054571817*10^-27,      // h / 2π
+      "eV*s": 6.582119569*10^-16,       // h / 2π
+      "keV*s": 6.582119569*10^-19       // h / 2π
     }
   },
 
   luminosity_of_sun: {
-  name: "Luminosity of the Sun",
+  name: "Luminosity of the Sun L sun",
   displayName: "Solar Luminosity (L☉)",
   definition: "Total power output of the Sun across all wavelengths.",
   values: {
@@ -148,7 +148,7 @@ window.constants = {
 },
 
 parsec: {
-  name: "Parsec",
+  name: "Parsec pc",
   displayName: "Parsec (pc)",
   definition: "Distance at which 1 astronomical unit subtends an angle of one arcsecond.",
   values: {
@@ -160,7 +160,7 @@ parsec: {
 },
 
 light_year: {
-  name: "Light-year",
+  name: "Light-year ly",
   displayName: "Light-year (ly)",
   definition: "Distance that light travels in one Julian year in vacuum.",
   values: {
@@ -172,7 +172,7 @@ light_year: {
 },
 
 joule: {
-  name: "Joule",
+  name: "Joule J",
   displayName: "Joule (J)",
   definition: "SI unit of energy; equal to one newton meter.",
   values: {
@@ -184,7 +184,7 @@ joule: {
 },
 
 newton: {
-  name: "Newton",
+  name: "Newton N",
   displayName: "Newton (N)",
   definition: "SI unit of force; the force required to accelerate one kilogram by one meter per second squared.",
   values: {
@@ -195,7 +195,7 @@ newton: {
 },
 
 watt: {
-  name: "Watt",
+  name: "Watt W",
   displayName: "Watt (W)",
   definition: "SI unit of power; one joule per second.",
   values: {
@@ -207,7 +207,7 @@ watt: {
 },
 
 density_of_water: {
-  name: "Density of Water",
+  name: "Density of Water rho",
   displayName: "Density of Water (ρ<sub>water</sub>)",
   definition: "Approximate density of water at 4°C.",
   values: {
@@ -218,7 +218,7 @@ density_of_water: {
 },
 
 mass_of_proton: {
-  name: "Mass of Proton",
+  name: "Mass of Proton mp",
   displayName: "Proton Mass (mₚ)",
   definition: "Rest mass of a proton.",
   values: {
@@ -230,7 +230,7 @@ mass_of_proton: {
 },
 
 mass_of_electron: {
-  name: "Mass of Electron",
+  name: "Mass of Electron me",
   displayName: "Electron Mass (mₑ)",
   definition: "Rest mass of an electron.",
   values: {
