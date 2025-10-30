@@ -9,13 +9,34 @@
 
   <style>
     /* ===== General Styles ===== */
-    body { font-family: Arial; max-width: 700px; margin:auto; padding:20px; line-height:1.6; background:#6a0dad; color:white; }
-    input, select, button { padding:8px; margin:5px 0; width:100%; border-radius:4px; border:none; box-sizing:border-box; }
-    button { font-size:16px; font-weight:bold; background:#4CAF50; color:white; cursor:pointer; }
-    button:hover { background:#45a049; }
-    h1,h2 { margin-top:30px; }
+    body {
+      font-family: Arial;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+      background: #6a0dad;
+      color: white;
+    }
+    input, select, button {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 4px;
+      border: none;
+      box-sizing: border-box;
+    }
+    button {
+      font-size: 16px;
+      font-weight: bold;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: #45a049; }
+    h1, h2 { margin-top: 30px; }
     pre { white-space: pre-wrap; }
-    hr { border: 1px solid #fff; margin:40px 0; }
+    hr { border: 1px solid #fff; margin: 40px 0; }
   </style>
 </head>
 <body>
@@ -65,16 +86,24 @@
 <script src="constants.js"></script>
 <script src="emissionLines.js"></script>
 
-
 <!-- Functions for all tools -->
 <script>
-// ----------------- Constant Finder Functions -----------------
+// ----------------- Utility Functions -----------------
 function stripHtml(html) {
   let div = document.createElement("div");
   div.innerHTML = html;
   return div.textContent || div.innerText || "";
 }
 
+// Format numeric values in *10^ style
+function formatScientific(num) {
+  if (!isFinite(num)) return num;
+  const exponent = Math.floor(Math.log10(Math.abs(num)));
+  const mantissa = num / Math.pow(10, exponent);
+  return `${mantissa.toPrecision(6)} * 10^${exponent}`;
+}
+
+// ----------------- Constant Finder Functions -----------------
 function searchConstants() {
   const term = document.getElementById("constantSearch").value.toLowerCase();
   const resultArea = document.getElementById("constantResult");
@@ -95,7 +124,7 @@ function searchConstants() {
 
   resultArea.innerHTML = results.map(c => {
     const valuesStr = Object.entries(c.values)
-      .map(([unit, val]) => `${val.toExponential()} ${unit}`)
+      .map(([unit, val]) => `${formatScientific(val)} ${unit}`)
       .join("<br>");
     
     return `
@@ -104,8 +133,8 @@ function searchConstants() {
       <div style="font-size:1.1em; margin:2px 0;">Values:<br>${valuesStr}</div>
     `;
   }).join("<hr style='border:1px solid white; margin:10px 0;'>");
-  
 }
+
 // ----------------- Unit Converter -----------------
 const hc_keV_A = window.constants.planck_constant_h.values["keV*s"] *
                 window.constants.speed_of_light_c.values["Å*s^-1"];
@@ -133,7 +162,7 @@ function convert() {
                     to==="keV"?hc_keV_A/angstromValue:
                     (hc_keV_A*1000)/angstromValue;
 
-  resultText.textContent = `${value} ${from} = ${outputValue.toFixed(6)} ${to}`;
+  resultText.textContent = `${value} ${from} = ${outputValue.toPrecision(6)} ${to}`;
 }
 
 // ----------------- Emission Line Finder -----------------
@@ -165,7 +194,8 @@ function findLines(){
     resultText.textContent = matches.map(line=>{
       let obsWavelength = line.wavelength*(1+z);
       let obsEnergy = line.energy/(1+z);
-      return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å\nObserved (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
+      return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å
+Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
     }).join("\n\n");
   }
 }
