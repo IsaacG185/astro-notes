@@ -240,6 +240,6 @@ mass_of_electron: {
     "MeV/c^2": 0.510998950
   }
 },
-  // de broglie wavelength
+  // [EQ] de broglie wavelength, [C] 1 AU, Wiens displacement constant (b)
   // Add more constants as necessary...
 };
