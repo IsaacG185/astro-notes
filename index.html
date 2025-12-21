@@ -11,12 +11,16 @@
     /* ===== General Styles ===== */
     body {
       font-family: Arial;
-      max-width: 700px;
-      margin: auto;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
       line-height: 1.6;
       background: #6a0dad;
       color: white;
+    }
+    #main-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
     }
     input, select, button {
       padding: 8px;
@@ -39,15 +43,15 @@
     hr { border: 1px solid #fff; margin: 40px 0; }
    
     /* ===== Page Logo ===== */
-#page-logo {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  width: 120px;          /* adjust size here */
-  height: auto;
-  z-index: 1000;
-  opacity: 0.95;
-}
+    #page-logo {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      width: 120px;          /* adjust size here */
+      height: auto;
+      z-index: 1000;
+      opacity: 0.95;
+    }
 
   </style>
 </head>
@@ -58,6 +62,11 @@
 <img src="astronotes_Logo_180x180.png"
      alt="AstroNotes Logo"
      id="page-logo">
+  
+<div id="main-container">
+
+
+  
 
 <!-- ================= Constant Finder Tool ================= -->
 <h1>Constant Finder</h1>
@@ -247,6 +256,6 @@ Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`
     });
   
 </script>
-
+</div>
 </body>
 </html>
