@@ -39,6 +39,7 @@
     hr { border: 1px solid #fff; margin: 40px 0; }
   </style>
 </head>
+
 <body>
 
 <!-- ================= Constant Finder Tool ================= -->
@@ -200,5 +201,20 @@ Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`
   }
 }
 </script>
+
+// ------ Update Status Tool ----------
+<hr>
+<p id="last-updated" style="font-size:0.9em; opacity:0.8;"></p>
+<script>
+  const lastUpdated = new Date(document.lastModified);
+
+  document.getElementById("last-updated").textContent =
+    "Last updated: " + lastUpdated.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+</script>
+  
 </body>
 </html>
