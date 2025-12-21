@@ -178,23 +178,33 @@ function findLines(){
     return;
   }
 
-  let inputEnergy = unit==="energy"?value:hc_keV_A/value;
-  let inputWavelength = unit==="wavelength"?value:hc_keV_A/value;
-  let tolerance = 0.05;
+  // Convert input to both energy and wavelength
+  let inputEnergy, inputWavelength;
+  if (unit === "energy") {
+    inputEnergy = value;
+    inputWavelength = hc_keV_A / value;
+  } else {
+    inputWavelength = value;
+    inputEnergy = hc_keV_A / value;
+  }
+
+  // Tolerance (fractional)
+  let tolerance = unit === "energy" ? 0.05 : 0.02;
 
   let matches = window.emissionLines.filter(line=>{
-    let obsWavelength = line.wavelength*(1+z);
-    let obsEnergy = line.energy/(1+z);
-    return Math.abs((obsEnergy-inputEnergy)/inputEnergy)<tolerance ||
-           Math.abs((obsWavelength-inputWavelength)/inputWavelength)<tolerance;
+    let obsWavelength = line.wavelength * (1 + z);
+    let obsEnergy = line.energy / (1 + z);
+
+    return Math.abs((obsEnergy - inputEnergy) / inputEnergy) < tolerance ||
+           Math.abs((obsWavelength - inputWavelength) / inputWavelength) < tolerance;
   });
 
   if(matches.length===0){
     resultText.textContent="No strong emission lines found near that value.";
   } else {
     resultText.textContent = matches.map(line=>{
-      let obsWavelength = line.wavelength*(1+z);
-      let obsEnergy = line.energy/(1+z);
+      let obsWavelength = line.wavelength * (1 + z);
+      let obsEnergy = line.energy / (1 + z);
       return `${line.name.padEnd(18)} Rest: ${line.energy.toFixed(3)} keV / ${line.wavelength.toFixed(2)} Å
 Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`;
     }).join("\n\n");
@@ -219,6 +229,6 @@ Observed (z=${z}): ${obsEnergy.toFixed(3)} keV / ${obsWavelength.toFixed(2)} Å`
       timeZoneName: "short"
     });
 </script>
-  
+
 </body>
 </html>
