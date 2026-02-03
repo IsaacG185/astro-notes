@@ -241,5 +241,6 @@ mass_of_electron: {
   }
 },
   // [EQ] de broglie wavelength, [C] 1 AU, Wiens displacement constant (b)
+  // Hubble Time (age of universe), 
   // Add more constants as necessary...
 };
