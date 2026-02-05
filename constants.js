@@ -240,7 +240,7 @@ mass_of_electron: {
     "MeV/c^2": 0.510998950
   }
 },
-  // [EQ] de broglie wavelength, vis-viva equation, [C] 1 AU, Wiens displacement constant (b), earth velocity, earth escape velocity.
+  // [EQ] de Broglie wavelength, vis-viva equation, [C] 1 AU, Wiens displacement constant (b), earth velocity, earth escape velocity.
   // Moon mass, moon radius, moon velocity
   // Hubble Time (age of universe), 
   // Add more constants as necessary...
